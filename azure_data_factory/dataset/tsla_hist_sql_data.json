@@ -1,0 +1,42 @@
+{
+	"name": "tsla_hist_sql_data",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "stock_sql_linked_service_1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "timestamp",
+				"type": "date"
+			},
+			{
+				"name": "open",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "high",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "low",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "close",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "TSLA_Historical"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

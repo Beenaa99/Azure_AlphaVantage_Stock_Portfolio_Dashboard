@@ -1,0 +1,49 @@
+{
+	"name": "amd_hist_blob_data",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "stock_blob_linked_service_1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "daily_AMD.csv",
+				"container": "historical"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": ""
+		},
+		"schema": [
+			{
+				"name": "timestamp",
+				"type": "String"
+			},
+			{
+				"name": "open",
+				"type": "String"
+			},
+			{
+				"name": "high",
+				"type": "String"
+			},
+			{
+				"name": "low",
+				"type": "String"
+			},
+			{
+				"name": "close",
+				"type": "String"
+			},
+			{
+				"name": "volume",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

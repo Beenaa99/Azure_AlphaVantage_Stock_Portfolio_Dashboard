@@ -1,0 +1,9 @@
+{
+	"name": "alpha-vantage-stock-data-ingestion",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "0d909118-b28d-48e8-bb1f-903006e61d93",
+		"tenantId": "60956884-10ad-40fa-863d-4f32c1e3a37a"
+	}
+}
