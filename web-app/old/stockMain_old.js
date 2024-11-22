@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize chart updater
     const chartUpdater = new ChartUpdater();
     chartUpdater.initializeCharts();
+    
     chartUpdater.startRealtimeUpdates();
 
     // Handle time filter clicks

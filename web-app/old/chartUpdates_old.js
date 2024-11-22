@@ -39,6 +39,7 @@ class ChartUpdater {
 
     initializeRealtimeData() {
         const { data, lastPrice } = generateInitialRealtimeData(50, this.lastPrice);
+        // get
         this.realtimeDataPoints = data;
         this.lastPrice = lastPrice;
         

@@ -41,27 +41,27 @@ class PortfolioData {
                 dayChange: -0.5,
                 volume: '3.2M',
                 marketCap: '62.1B'
-            },
-            {
-                symbol: 'UBER',
-                companyName: 'Uber Technologies',
-                shares: 150,
-                avgPrice: 65.20,
-                currentPrice: 75.89,
-                dayChange: 3.2,
-                volume: '15.8M',
-                marketCap: '156.3B'
-            },
-            {
-                symbol: 'AAPL',
-                companyName: 'Apple Inc.',
-                shares: 100,
-                avgPrice: 170.30,
-                currentPrice: 172.45,
-                dayChange: 0.8,
-                volume: '65.4M',
-                marketCap: '2.68T'
             }
+            // {
+            //     symbol: 'UBER',
+            //     companyName: 'Uber Technologies',
+            //     shares: 150,
+            //     avgPrice: 65.20,
+            //     currentPrice: 75.89,
+            //     dayChange: 3.2,
+            //     volume: '15.8M',
+            //     marketCap: '156.3B'
+            // },
+            // {
+            //     symbol: 'AAPL',
+            //     companyName: 'Apple Inc.',
+            //     shares: 100,
+            //     avgPrice: 170.30,
+            //     currentPrice: 172.45,
+            //     dayChange: 0.8,
+            //     volume: '65.4M',
+            //     marketCap: '2.68T'
+            // }
         ];
 
         this.historicalData = this.generateHistoricalData();
