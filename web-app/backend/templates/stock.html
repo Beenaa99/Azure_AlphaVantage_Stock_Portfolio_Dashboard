@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Details</title>
+    <!-- ApexCharts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <!-- Updated Links for Flask -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/stock-detail.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+</head> 
+<body>
+    <div class="container">
+        <div class="header-section">
+            <div class="stock-info-card">
+                <div class="stock-info">
+                    <a href="/" class="nav-link">← Back to Portfolio</a>
+                    <div class="stock-details">
+                        <div class="stock-name">NVDA</div>
+                        <div class="stock-company">NVIDIA Corporation</div>
+                    </div>
+                    <div class="price-section">
+                        <div class="stock-price">$875.23</div>
+                        <div class="stock-change positive">+$21.58 (+2.5%)</div>
+                    </div>
+                </div>
+            </div>
+        
+        
+
+        <div class="chart-section">
+            <div class="chart-header">
+                <div class="chart-title">Historical Performance</div>
+                <div class="time-filters">
+                    <button class="time-filter">1D</button>
+                    <button class="time-filter active">1W</button>
+                    <button class="time-filter">1M</button>
+                    <button class="time-filter">3M</button>
+                    <button class="time-filter">1Y</button>
+                </div>
+            </div>
+            <div class="historical-chart-container" id="historicalChart"></div>
+        </div>
+
+        <div class="chart-section">
+            <div class="chart-header">
+                <div class="chart-title">Real-time Performance</div>
+                <div id="last-updated" style="color: #6b7280; font-size: 0.875em;"></div>
+            </div>
+            <div class="realtime-chart-container" id="realtimeChart"></div>
+        </div>
+
+        
+
+        <div class="chart-section">
+            <div class="chart-header">
+                <div class="chart-title">Historical Performance</div>
+                <div class="time-filters">
+                    <button class="time-filter">1D</button>
+                    <button class="time-filter active">1W</button>
+                    <button class="time-filter">1M</button>
+                    <button class="time-filter">3M</button>
+                    <button class="time-filter">1Y</button>
+                </div>
+            </div>
+            <div class="historical-chart-container" id="historicalChart"></div>
+        </div>
+
+
+
+      
+
+        <div class="additional-metrics">
+            <div class="metric-group">
+                <div class="metric-group-title">Price Statistics</div>
+                <div class="metric-row">
+                    <div class="metric-row-label">52 Week High</div>
+                    <div class="metric-row-value">$896.45</div>
+                </div>
+                <div class="metric-row">
+                    <div class="metric-row-label">52 Week Low</div>
+                    <div class="metric-row-value">$222.97</div>
+                </div>
+                <div class="metric-row">
+                    <div class="metric-row-label">Average Volume</div>
+                    <div class="metric-row-value">45.8M</div>
+                </div>
+            </div>
+
+            <div class="metrics-card">
+                <div class="metric">
+                    <div class="metric-label">Market Cap</div>
+                    <div class="metric-value">$2.16T</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Volume</div>
+                    <div class="metric-value">52.3M</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">P/E Ratio</div>
+                    <div class="metric-value">75.32</div>
+                </div>
+            </div>
+        </div>
+            <div class="metric-group">
+                <div class="metric-group-title">Key Metrics</div>
+                <div class="metric-row">
+                    <div class="metric-row-label">Beta</div>
+                    <div class="metric-row-value">1.75</div>
+                </div>
+                <div class="metric-row">
+                    <div class="metric-row-label">Dividend Yield</div>
+                    <div class="metric-row-value">0.04%</div>
+                </div>
+                <div class="metric-row">
+                    <div class="metric-row-label">EPS (TTM)</div>
+                    <div class="metric-row-value">$11.62</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Common utilities -->
+    <script src="{{ url_for('static', filename='js/common/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/common/formatters.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/stock-detail/chartUpdates.js') }}"></script>
+<script src="{{ url_for('static', filename='js/stock-detail/chartConfigs.js') }}"></script>
+<script src="{{ url_for('static', filename='js/stock-detail/dataGenerators.js') }}"></script>
+<script src="{{ url_for('static', filename='js/stock-detail/stockMain.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/socket.io/client-dist/socket.io.min.js"></script>
+
+
+</body>
+</html>

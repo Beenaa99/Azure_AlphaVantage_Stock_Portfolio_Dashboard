@@ -1,0 +1,235 @@
+/* Dashboard Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 24px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.header-left h1 {
+    font-size: 1.8em;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+#last-updated {
+    color: #6b7280;
+    font-size: 0.875em;
+}
+
+.portfolio-summary {
+    display: flex;
+    gap: 24px;
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.summary-item .label {
+    font-size: 0.875em;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.summary-item .value {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #111827;
+}
+
+.total-value .value {
+    font-size: 1.8em;
+}
+
+/* Stock Grid */
+.stock-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.stock-card {
+    background: white;
+    border-radius: 16px;
+    
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.stock-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.stock-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.stock-info h3 {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.stock-info .company-name {
+    color: #6b7280;
+    font-size: 0.875em;
+}
+
+.stock-price {
+    text-align: right;
+}
+
+.current-price {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.price-change {
+    font-size: 0.875em;
+    font-weight: 500;
+}
+
+.stock-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.metric {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.metric .label {
+    font-size: 0.75em;
+    color: #6b7280;
+}
+
+.metric .value {
+    font-size: 1em;
+    font-weight: 500;
+    color: #111827;
+}
+
+/* Charts Container */
+.charts-container {
+    display: grid;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.chart-section {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.chart-section h2 {
+    font-size: 1.25em;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 24px;
+}
+
+#portfolioChart {
+    height: 400px;
+}
+
+/* Portfolio Table */
+.portfolio-table-section {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.table-header h2 {
+    font-size: 1.25em;
+    font-weight: 600;
+    color: #111827;
+}
+
+.table-metrics {
+    display: flex;
+    gap: 24px;
+}
+
+.portfolio-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.portfolio-table th,
+.portfolio-table td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.portfolio-table th {
+    font-weight: 500;
+    color: #6b7280;
+    background: #f9fafb;
+}
+
+.portfolio-table td {
+    color: #111827;
+}
+
+.portfolio-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .stock-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+    }
+
+    .portfolio-summary {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .stock-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+}
