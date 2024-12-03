@@ -3,8 +3,8 @@ import requests
 import json
 
 # Azure Event Hub Configuration
-CONNECTION_STR = "Endpoint=sb://intraday-stock-ns.servicebus.windows.net/;SharedAccessKeyName=consumer-policy;SharedAccessKey=RqFrjCEwYgpOnq5LBhryARCim7V1KQS88+AEhJqHrqo="
-EVENT_HUB_NAME = "intraday-stock-1"
+CONNECTION_STR = "Endpoint=sb://intraday-stock-ns.servicebus.windows.net/;SharedAccessKeyName=listen_to_processed_stock_consumer;SharedAccessKey=mg4QQKdsB1EojnQmmmMtIwlqA4ld0ThH3+AEhFtIvBk=;EntityPath=intraday-stock-2"
+EVENT_HUB_NAME = "intraday-stock-2"
 CONSUMER_GROUP = "$Default"  # Default consumer group
 url = "http://127.0.0.1:5000/send_data"
 
@@ -18,7 +18,7 @@ def on_event(partition_context, event):
     response = requests.post(url, json=data)
 
     # Optionally update the checkpoint to mark this event as processed
-    partition_context.update_checkpoint(event)
+    #partition_context.update_checkpoint(event)
 
 # Initialize the Event Hub Consumer Client
 consumer = EventHubConsumerClient.from_connection_string(

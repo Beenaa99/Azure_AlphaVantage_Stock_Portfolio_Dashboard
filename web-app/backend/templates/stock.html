@@ -4,137 +4,240 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Details</title>
-    <!-- ApexCharts -->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-        <!-- Updated Links for Flask -->
-<link rel="stylesheet" href="{{ url_for('static', filename='css/stock-detail.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-
-</head> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.41.0/apexcharts.min.js"></script>
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .stock-info-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .stock-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .nav-link {
+            color: #3b82f6;
+            text-decoration: none;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        
+        .stock-details {
+            margin-top: 10px;
+        }
+        
+        .stock-name {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .stock-company {
+            color: #6b7280;
+            margin: 5px 0;
+        }
+        
+        .price-section {
+            text-align: right;
+        }
+        
+        .stock-price {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .stock-change {
+            margin: 5px 0;
+            padding: 3px 8px;
+            border-radius: 5px;
+        }
+        
+        .stock-change.positive {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .stock-change.negative {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        
+        .chart-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .chart-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .time-filters {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .time-filter {
+            padding: 5px 15px;
+            border-radius: 5px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .time-filter.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .metrics-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .metric-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .metric-label {
+            color: #6b7280;
+        }
+        
+        .metric-value {
+            font-weight: 500;
+        }
+    </style>
+</head>
 <body>
+    <!-- Hidden elements for initial data -->
+    <script id="initial-data" type="application/json">{{ initial_data | safe }}</script>
+    <script id="current-data" type="application/json">{{ current_data | safe }}</script>
+
     <div class="container">
         <div class="header-section">
             <div class="stock-info-card">
                 <div class="stock-info">
                     <a href="/" class="nav-link">← Back to Portfolio</a>
                     <div class="stock-details">
-                        <div class="stock-name">NVDA</div>
-                        <div class="stock-company">NVIDIA Corporation</div>
+                        <h1 class="stock-name">{{ symbol }}</h1>
+                        <p class="stock-company" id="company-name"></p>
                     </div>
                     <div class="price-section">
-                        <div class="stock-price">$875.23</div>
-                        <div class="stock-change positive">+$21.58 (+2.5%)</div>
+                        <p class="stock-price">-</p>
+                        <p class="stock-change">-</p>
                     </div>
                 </div>
             </div>
-        
-        
+        </div>
 
         <div class="chart-section">
             <div class="chart-header">
-                <div class="chart-title">Historical Performance</div>
+                <h2 class="chart-title">Price History</h2>
                 <div class="time-filters">
-                    <button class="time-filter">1D</button>
-                    <button class="time-filter active">1W</button>
-                    <button class="time-filter">1M</button>
-                    <button class="time-filter">3M</button>
-                    <button class="time-filter">1Y</button>
+                    <button class="time-filter active" data-days="1">1D</button>
+                    <button class="time-filter" data-days="7">1W</button>
+                    <button class="time-filter" data-days="30">1M</button>
+                    <button class="time-filter" data-days="90">3M</button>
+                    <button class="time-filter" data-days="365">1Y</button>
                 </div>
             </div>
-            <div class="historical-chart-container" id="historicalChart"></div>
+            <div id="historicalChart"></div>
         </div>
 
         <div class="chart-section">
             <div class="chart-header">
-                <div class="chart-title">Real-time Performance</div>
-                <div id="last-updated" style="color: #6b7280; font-size: 0.875em;"></div>
+                <h2 class="chart-title">Volume</h2>
+                <p id="last-updated" style="color: #6b7280; font-size: 0.875em;"></p>
             </div>
-            <div class="realtime-chart-container" id="realtimeChart"></div>
+            <div id="realtimeChart"></div>
         </div>
-
+        <div class="chart-section">
+            <div class="chart-header">
+                <h2 id="moving-averages" class="chart-title">Moving Averages Analysis</h2>
+            </div>
+            <div id="movingAveragesChart"></div>
+        </div>
         
-
         <div class="chart-section">
             <div class="chart-header">
-                <div class="chart-title">Historical Performance</div>
-                <div class="time-filters">
-                    <button class="time-filter">1D</button>
-                    <button class="time-filter active">1W</button>
-                    <button class="time-filter">1M</button>
-                    <button class="time-filter">3M</button>
-                    <button class="time-filter">1Y</button>
-                </div>
+                <h2 id="volume-analysis" class="chart-title">Volume Analysis</h2>
             </div>
-            <div class="historical-chart-container" id="historicalChart"></div>
+            <div id="volumeAnalysisChart"></div>
         </div>
-
-
-
-      
-
-        <div class="additional-metrics">
-            <div class="metric-group">
-                <div class="metric-group-title">Price Statistics</div>
+        
+        <div class="metrics-section">
+            <div class="metric-card">
+                <h3 class="metric-title">Moving Averages</h3>
                 <div class="metric-row">
-                    <div class="metric-row-label">52 Week High</div>
-                    <div class="metric-row-value">$896.45</div>
+                    <span class="metric-label">Simple MA</span>
+                    <span class="metric-value" id="sma-value">-</span>
                 </div>
                 <div class="metric-row">
-                    <div class="metric-row-label">52 Week Low</div>
-                    <div class="metric-row-value">$222.97</div>
+                    <span class="metric-label">Cumulative MA</span>
+                    <span class="metric-value" id="cma-value">-</span>
                 </div>
                 <div class="metric-row">
-                    <div class="metric-row-label">Average Volume</div>
-                    <div class="metric-row-value">45.8M</div>
-                </div>
-            </div>
-
-            <div class="metrics-card">
-                <div class="metric">
-                    <div class="metric-label">Market Cap</div>
-                    <div class="metric-value">$2.16T</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">Volume</div>
-                    <div class="metric-value">52.3M</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-label">P/E Ratio</div>
-                    <div class="metric-value">75.32</div>
-                </div>
-            </div>
-        </div>
-            <div class="metric-group">
-                <div class="metric-group-title">Key Metrics</div>
-                <div class="metric-row">
-                    <div class="metric-row-label">Beta</div>
-                    <div class="metric-row-value">1.75</div>
-                </div>
-                <div class="metric-row">
-                    <div class="metric-row-label">Dividend Yield</div>
-                    <div class="metric-row-value">0.04%</div>
-                </div>
-                <div class="metric-row">
-                    <div class="metric-row-label">EPS (TTM)</div>
-                    <div class="metric-row-value">$11.62</div>
+                    <span class="metric-label">Volume MA</span>
+                    <span class="metric-value" id="vma-value">-</span>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <!-- Common utilities -->
+    <!-- Load your JavaScript files -->
+    <script src="{{ url_for('static', filename='js/stock-detail/chartConfigs.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/stock-detail/chartUpdates.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/stock-detail/stockMain.js') }}"></script>
     <script src="{{ url_for('static', filename='js/common/utils.js') }}"></script>
     <script src="{{ url_for('static', filename='js/common/formatters.js') }}"></script>
-
-<script src="{{ url_for('static', filename='js/stock-detail/chartUpdates.js') }}"></script>
-<script src="{{ url_for('static', filename='js/stock-detail/chartConfigs.js') }}"></script>
-<script src="{{ url_for('static', filename='js/stock-detail/dataGenerators.js') }}"></script>
-<script src="{{ url_for('static', filename='js/stock-detail/stockMain.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/socket.io/client-dist/socket.io.min.js"></script>
-
 
 </body>
 </html>

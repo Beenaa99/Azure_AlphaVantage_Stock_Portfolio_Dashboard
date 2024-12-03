@@ -1,25 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Get the stock symbol from the URL
+    const pathSegments = window.location.pathname.split('/');
+    const stockSymbol = pathSegments[pathSegments.length - 1].toUpperCase();
+    
     // Initialize chart updater
     const chartUpdater = new ChartUpdater();
     chartUpdater.initializeCharts();
 
+    // Connect to WebSocket
+    const socket = io("http://127.0.0.1:5000");
 
-// In your JS file
-const socket = io("http://127.0.0.1:5000"); // Ensure this matches your Flask server's address and port
+    socket.on("connect", () => {
+        console.log("Connected to WebSocket server");
+        // Join the room for this specific stock
+        socket.emit('join', { symbol: stockSymbol });
+    });
 
-// Handle connection and errors
-socket.on("connect", () => {
-    console.log("Connected to WebSocket server");
-});
+    socket.on("disconnect", () => {
+        console.log("Disconnected from WebSocket server");
+        // Leave the room when disconnecting
+        socket.emit('leave', { symbol: stockSymbol });
+    });
 
-socket.on("disconnect", () => {
-    console.log("Disconnected from WebSocket server");
-});
+    socket.on("stock_update", (data) => {
+        console.log("Received stock update:", data);
+        // Update stock name and company name
+        updateStockInfo(stockSymbol);
+        // Update charts and other data
+        chartUpdater.handleIncomingData(data);
+    });
 
-socket.on("stock_update", (data) => {
-    console.log("Received stock update:", data);
-    chartUpdater.handleIncomingData(data);
-});
     // Handle time filter clicks
     document.querySelectorAll('.time-filter').forEach(button => {
         button.addEventListener('click', () => {
@@ -51,3 +61,16 @@ socket.on("stock_update", (data) => {
         }
     });
 });
+
+// Helper function to update stock info
+function updateStockInfo(symbol) {
+    const companyNames = {
+        'AAPL': 'Apple Inc.',
+        'NVDA': 'NVIDIA Corporation',
+        'AMD': 'Advanced Micro Devices, Inc.',
+        'TSLA': 'Tesla, Inc.'
+    };
+
+    document.querySelector('.stock-name').textContent = symbol;
+    document.querySelector('.stock-company').textContent = companyNames[symbol];
+}
