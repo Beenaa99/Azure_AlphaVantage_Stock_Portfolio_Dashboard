@@ -69,23 +69,26 @@ Cloud-based real-time portfolio monitoring system that integrates ive stock data
 ## Prerequisites
 - Python 3.8+
 - Azure Account (Event Hub, Stream Analytics, Data Factory, SQL DB)
+- ([Data Studio](https://azure.microsoft.com/en-us/products/data-studio))
+- ([Event Hubs](https://azure.microsoft.com/en-us/products/event-hubs))
+- ([Data Factory](https://azure.microsoft.com/en-us/products/data-factory))
+- ([Stream Analytics](https://azure.microsoft.com/en-us/products/stream-analytics))
+- ([Flask](https://flask.palletsprojects.com/en/stable/))
 - AlphaVantage API key
 
 ```bash
 # Configure .env with:
 # - ALPHAVANTAGE_API_KEY
-# - SQL_CONNECTION_STRING
-# - EVENTHUB_CONN_STR
+# - SQL_CONNECTION_STRING (Azure SQL server)
+# - EVENTHUB_CONN_STR (event hub 1 for producers, event hub 2 for consumer)
 ```
 ## Repository Structure
 ```
-
-
-├── azure-data-studio/          # SQL scripts ([Data Studio](https://azure.microsoft.com/en-us/products/data-studio))
-├── azure-event-hub/            # Producer/Consumer scripts ([Event Hubs](https://azure.microsoft.com/en-us/products/event-hubs))
-├── azure-data-factory/         # ADF pipelines ([Data Factory](https://azure.microsoft.com/en-us/products/data-factory))
-├── azure-stream-analytics/    # Analytics queries ([Stream Analytics](https://azure.microsoft.com/en-us/products/stream-analytics))
-└── web-app/                    # Flask application ([Flask](https://flask.palletsprojects.com/en/stable/))
+├── azure-data-studio/          # SQL scripts 
+├── azure-event-hub/            # Producer/Consumer scripts 
+├── azure-data-factory/         # ADF pipelines 
+├── azure-stream-analytics/    # Analytics queries 
+└── web-app/                    # Flask application 
 ```
 ### 1. Database
 ```bash
