@@ -77,10 +77,10 @@ Cloud-based real-time portfolio monitoring system that integrates ive stock data
 - AlphaVantage API key
 
 
-# Configure .env with:
-# - ALPHAVANTAGE_API_KEY
-# - SQL_CONNECTION_STRING (Azure SQL server)
-# - EVENTHUB_CONN_STR (event hub 1 for producers, event hub 2 for consumer)
+### Keys required:
+#### - ALPHAVANTAGE_API_KEY
+#### - SQL_CONNECTION_STRING (Azure SQL server)
+#### - EVENTHUB_CONN_STR (event hub 1 for producers, event hub 2 for consumer)
 
 ## Repository Structure
 ```
