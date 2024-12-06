@@ -2,7 +2,7 @@
   
 
 ## Project’s Function
-Cloud-based real-time portfolio monitoring system that integrates ive stock data visualization and stream processing. Provides interactive visualization of stock performance, technical indicators, and portfolio metrics for informed investment decisions.
+### Cloud-based real-time portfolio monitoring system that integrates ive stock data visualization and stream processing. Provides interactive visualization of stock performance, technical indicators, and portfolio metrics for informed investment decisions.
 ---
 ![Descriptors](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/demo_videos/descriptors.gif)
 
