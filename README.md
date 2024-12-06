@@ -147,6 +147,7 @@ The project demonstrates a scalable, cloud-native architecture capable of real-t
 ---
 ## Demo
 [Watch the Demo](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/demo_videos/portfolio_page_demo.mp4)
+[GIF](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXVjYjd1MWhidXVsd3Z5dTl0NzJ1OTE4dnQ3bmx5aXUxOWVjcHJ2NCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/13rcdZqP5DsH4QGKZK/giphy.gif)
 
 ---
 
