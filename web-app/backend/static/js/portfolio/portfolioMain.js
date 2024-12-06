@@ -1,19 +1,21 @@
+// portfolioMain.js
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize portfolio data
+
+    
     const portfolio = new PortfolioData();
     const portfolioChart = new PortfolioChart('#portfolioChart');
     
-    // Render initial chart
     portfolioChart.render();
-    portfolioChart.updateData(portfolio.historicalData);
 
     function createStockCard(stock) {
         const marketValue = stock.currentPrice * stock.shares;
         const totalReturn = marketValue - (stock.avgPrice * stock.shares);
         const totalReturnPercentage = (totalReturn / (stock.avgPrice * stock.shares)) * 100;
+        
 
         return `
-            <div class="stock-card" onclick="window.location.href='/stock.html?symbol=${stock.symbol}'">
+        <div class="stock-card  onclick="window.location.href='/stock/${stock.symbol}'">
+            
                 <div class="stock-card-header">
                     <div class="stock-info">
                         <h3>${stock.symbol}</h3>
@@ -45,21 +47,24 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="label">Avg Cost</span>
                         <span class="value">${utils.formatCurrency(stock.avgPrice)}</span>
                     </div>
-                </div>
+                
+            </div>
             </div>
         `;
     }
 
     function updatePortfolioTable() {
         const tableBody = document.getElementById('portfolio-table-body');
-        tableBody.innerHTML = portfolio.stocks.map(stock => {
+        const stocks = portfolio.stocks.map(stock => portfolio.getStockMetrics(stock.symbol));
+        
+        tableBody.innerHTML = stocks.map(stock => {
             const marketValue = stock.currentPrice * stock.shares;
             const totalReturn = marketValue - (stock.avgPrice * stock.shares);
             const totalReturnPercentage = (totalReturn / (stock.avgPrice * stock.shares)) * 100;
             const todayChange = marketValue * (stock.dayChange / 100);
 
             return `
-                <tr onclick="window.location.href='/stock.html?symbol=${stock.symbol}'" style="cursor: pointer;">
+                <tr onclick="window.location.href='/stock/${stock.symbol}'" style="cursor: pointer;">
                     <td>
                         <div style="font-weight: 500;">${stock.symbol}</div>
                         <div style="font-size: 0.875em; color: #6b7280;">${stock.companyName}</div>
@@ -84,7 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateSummaryMetrics() {
         const summary = portfolio.getPortfolioSummary();
         
-        // Update header metrics
         document.querySelector('.total-value .value').textContent = 
             utils.formatCurrency(summary.totalValue);
         
@@ -93,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `${utils.formatCurrency(summary.todayChange)} (${utils.formatChangeValue(summary.todayChangePercentage)}%)`;
         dailyChangeElement.className = `value ${utils.getChangeClass(summary.todayChange)}`;
 
-        // Update table header metrics
         document.querySelector('.table-metrics .metric:first-child .value').textContent = 
             utils.formatCurrency(summary.totalCost);
         
@@ -101,33 +104,29 @@ document.addEventListener('DOMContentLoaded', () => {
         totalReturnElement.textContent = utils.formatChangeValue(summary.totalReturnPercentage) + '%';
         totalReturnElement.className = `value ${utils.getChangeClass(summary.totalReturnPercentage)}`;
     }
+    
 
     // Initial render
+    const initialStocks = portfolio.stocks.map(stock => portfolio.getStockMetrics(stock.symbol));
     document.querySelector('.stock-grid').innerHTML = 
-        portfolio.stocks.map(stock => createStockCard(stock)).join('');
+        initialStocks.map(stock => createStockCard(stock)).join('');
     updatePortfolioTable();
     updateSummaryMetrics();
 
-    // Handle real-time updates
-    setInterval(() => {
-        const updates = portfolio.simulateRealtimeUpdate();
+    // WebSocket update handlers
+    portfolio.socket.on('stock_update', () => {
+        console.log('Updating UI...');
+        const stocks = portfolio.stocks.map(stock => portfolio.getStockMetrics(stock.symbol));
         
-        // Update chart
-        portfolioChart.updateData(updates.historicalData);
-        
-        // Update stock cards
         document.querySelector('.stock-grid').innerHTML = 
-            updates.stocks.map(stock => createStockCard(stock)).join('');
+            stocks.map(stock => createStockCard(stock)).join('');
         
-        // Update table
         updatePortfolioTable();
-        
-        // Update summary metrics
         updateSummaryMetrics();
+        portfolioChart.updateData(portfolio.getHistoricalData());
         
-        // Update last updated timestamp
         utils.updateLastUpdated();
-    }, 5000);
+    });
 
     // Handle window resize
     window.addEventListener('resize', () => {

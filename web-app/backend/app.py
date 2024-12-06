@@ -51,7 +51,8 @@ def receive_data():
         'volume': int(data['volume']),
         'sma': float(data['SMA']),
         'cma': float(data['CMA']),
-        'vma': float(data['VMA'])
+        'vma': float(data['VMA']),
+        'stock': data['stock_symbol']
     }
     
     stock_symbol = data['stock_symbol'].upper()

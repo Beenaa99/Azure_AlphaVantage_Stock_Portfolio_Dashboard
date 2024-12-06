@@ -1,3 +1,4 @@
+// portfolioChart.js
 class PortfolioChart {
     constructor(containerId) {
         this.chartOptions = {
@@ -19,8 +20,6 @@ class PortfolioChart {
                         pan: false,
                     }
                 },
-                
-   
                 animations: {
                     enabled: true,
                     easing: 'easeinout',
@@ -35,9 +34,8 @@ class PortfolioChart {
                     }
                 }
             },
-            dataLabels:
-            {
-                enabled:false
+            dataLabels: {
+                enabled: false
             },
             colors: ['#3b82f6'],
             fill: {
@@ -96,7 +94,7 @@ class PortfolioChart {
             },
             tooltip: {
                 x: {
-                    format: 'MMM dd, yyyy'
+                    format: 'MMM dd, yyyy HH:mm'
                 },
                 y: {
                     formatter: function(value) {

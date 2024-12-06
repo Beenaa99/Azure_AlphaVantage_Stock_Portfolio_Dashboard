@@ -1,149 +1,195 @@
-// Mock portfolio data and data management
 class PortfolioData {
     constructor() {
+        // portfolioData.js constructor
+this.socket = io();
+console.log('Socket instance created');
+
+        // Add to portfolioData.js constructor
+this.socket.on('connect', () => {
+    console.log('WebSocket connected');
+});
+this.socket.on('connect_error', (error) => {
+    console.error('WebSocket connection error:', error);
+});
+
+
+        // Static portfolio positions
         this.stocks = [
             {
                 symbol: 'NVDA',
                 companyName: 'NVIDIA Corporation',
-                shares: 50,
-                avgPrice: 750.20,
-                currentPrice: 875.23,
-                dayChange: 2.5,
-                volume: '52.3M',
-                marketCap: '2.16T'
+                shares: 80,
+                avgPrice: 48.16
             },
             {
                 symbol: 'TSLA',
                 companyName: 'Tesla, Inc.',
                 shares: 200,
-                avgPrice: 180.50,
-                currentPrice: 175.34,
-                dayChange: -1.2,
-                volume: '98.6M',
-                marketCap: '556.8B'
+                avgPrice: 248.42
             },
             {
                 symbol: 'AMD',
                 companyName: 'Advanced Micro Devices',
                 shares: 100,
-                avgPrice: 160.30,
-                currentPrice: 178.62,
-                dayChange: 1.8,
-                volume: '45.7M',
-                marketCap: '288.5B'
+                avgPrice: 138.58
             },
             {
-                symbol: 'SNOW',
-                companyName: 'Snowflake Inc.',
-                shares: 75,
-                avgPrice: 190.40,
-                currentPrice: 188.45,
-                dayChange: -0.5,
-                volume: '3.2M',
-                marketCap: '62.1B'
+                symbol: 'AAPL',
+                companyName: 'Apple Inc.',
+                shares: 100,
+                avgPrice: 184.73
             }
-            // {
-            //     symbol: 'UBER',
-            //     companyName: 'Uber Technologies',
-            //     shares: 150,
-            //     avgPrice: 65.20,
-            //     currentPrice: 75.89,
-            //     dayChange: 3.2,
-            //     volume: '15.8M',
-            //     marketCap: '156.3B'
-            // },
-            // {
-            //     symbol: 'AAPL',
-            //     companyName: 'Apple Inc.',
-            //     shares: 100,
-            //     avgPrice: 170.30,
-            //     currentPrice: 172.45,
-            //     dayChange: 0.8,
-            //     volume: '65.4M',
-            //     marketCap: '2.68T'
-            // }
         ];
 
-        this.historicalData = this.generateHistoricalData();
+        // Dynamic data from WebSocket
+        this.currentPrices = {};
+        this.dayChanges = {};
+        this.volumes = {};
+        this.historicalData = [];
+        
+        // Initialize WebSocket connection
+        this.socket = io();
+        this.setupWebSocket();
+        
+        // Fetch initial historical data
+        this.fetchHistoricalData();
+    }
+
+    setupWebSocket() {
+        this.stocks.forEach(stock => {
+            this.socket.emit('join', { symbol: stock.symbol });
+            
+            // Initialize with default values
+            this.currentPrices[stock.symbol] = stock.avgPrice;
+            this.openPrices = {}; // Add this new object to store opening prices
+            this.dayChanges[stock.symbol] = 0;
+            this.volumes[stock.symbol] = 0;
+        });
+    
+        this.socket.on('stock_update', (data) => {
+            console.log('Before update:', this.currentPrices);
+            
+            // Store the first price of the day as the opening price if not set
+            if (!this.openPrices[data.stock]) {
+                this.openPrices[data.stock] = data.open;  // Use data.open from the websocket
+            }
+            
+            this.currentPrices[data.stock] = data.close;
+            this.volumes[data.stock] = data.volume;
+            // Calculate day change using opening price
+            this.dayChanges[data.stock] = ((data.close - this.openPrices[data.stock]) / this.openPrices[data.stock]) * 100;
+            
+            console.log('After update:', this.currentPrices);
+            this.updateHistoricalData();
+        });
+    }
+    async fetchHistoricalData() {
+        try {
+            // Fetch historical data for each stock
+            const promises = this.stocks.map(stock => 
+                fetch(`/get_historical_data/${stock.symbol}`).then(res => res.json())
+            );
+            
+            const allHistoricalData = await Promise.all(promises);
+            
+            // Process and combine historical data
+            this.processHistoricalData(allHistoricalData);
+        } catch (error) {
+            console.error('Error fetching historical data:', error);
+        }
+    }
+
+    processHistoricalData(allData) {
+        // Combine historical data from all stocks into portfolio value
+        const timestampMap = new Map();
+        
+        allData.forEach((stockData, index) => {
+            const stock = this.stocks[index];
+            
+            stockData.forEach(dataPoint => {
+                const timestamp = new Date(dataPoint.timestamp).getTime();
+                const value = dataPoint.close * stock.shares;
+                
+                if (timestampMap.has(timestamp)) {
+                    timestampMap.set(timestamp, timestampMap.get(timestamp) + value);
+                } else {
+                    timestampMap.set(timestamp, value);
+                }
+            });
+        });
+
+        // Convert to array format for chart
+        this.historicalData = Array.from(timestampMap.entries())
+            .map(([x, y]) => ({ x, y }))
+            .sort((a, b) => a.x - b.x);
+    }
+
+    updateHistoricalData() {
+        const currentValue = this.getPortfolioSummary().totalValue;
+        const timestamp = new Date().getTime();
+        
+        this.historicalData.push({
+            x: timestamp,
+            y: currentValue
+        });
+
+        // Keep last 180 data points (3 hours at 1-minute intervals)
+        if (this.historicalData.length > 180) {
+            this.historicalData.shift();
+        }
     }
 
     getPortfolioSummary() {
         let totalValue = 0;
         let totalCost = 0;
-        let todayChange = 0;
-
+        let todayOpenValue = 0;
+    
         this.stocks.forEach(stock => {
-            const currentValue = stock.currentPrice * stock.shares;
+            const currentPrice = this.currentPrices[stock.symbol];
+            const currentValue = currentPrice * stock.shares;
             const originalValue = stock.avgPrice * stock.shares;
+            const openPrice = this.openPrices[stock.symbol] || currentPrice; // Use actual opening price or current as fallback
+            
             totalValue += currentValue;
             totalCost += originalValue;
-            todayChange += (currentValue * stock.dayChange / 100);
+            todayOpenValue += openPrice * stock.shares;
         });
-
+    
+        const todayChange = totalValue - todayOpenValue;
+        const todayChangePercentage = ((totalValue - todayOpenValue) / todayOpenValue) * 100;
+    
         return {
             totalValue,
             totalCost,
             totalReturn: totalValue - totalCost,
             totalReturnPercentage: ((totalValue - totalCost) / totalCost) * 100,
             todayChange,
-            todayChangePercentage: (todayChange / (totalValue - todayChange)) * 100
+            todayChangePercentage
         };
     }
 
-    getStockMetrics(symbol) {
-        return this.stocks.find(stock => stock.symbol === symbol);
-    }
+// Add to portfolioData.js
+getStockMetrics(symbol) {
+    const stock = this.stocks.find(s => s.symbol === symbol);
+    if (!stock) return null;
+    
+    const currentPrice = this.currentPrices[symbol];
+    const marketValue = currentPrice * stock.shares;
+    const costBasis = stock.avgPrice * stock.shares;
+    const totalReturn = marketValue - costBasis;
+    
+    return {
+        ...stock,
+        currentPrice,
+        dayChange: this.dayChanges[symbol],
+        volume: this.volumes[symbol],
+        marketValue,
+        totalReturn,
+        totalReturnPercentage: (totalReturn / costBasis) * 100
+    };
+}
 
-    generateHistoricalData() {
-        const data = [];
-        let value = 125000; // Starting portfolio value
-        const days = 180; // 6 months of data
-
-        for (let i = days; i >= 0; i--) {
-            const date = new Date();
-            date.setDate(date.getDate() - i);
-            
-            // Add some randomness to the value
-            const change = value * (Math.random() * 0.02 - 0.01); // ±1% daily change
-            value += change;
-
-            data.push({
-                x: date.getTime(),
-                y: value
-            });
-        }
-
-        return data;
-    }
-
-    simulateRealtimeUpdate() {
-        this.stocks = this.stocks.map(stock => {
-            const changePercent = (Math.random() - 0.5) * 0.2; // ±0.1% change
-            const priceChange = stock.currentPrice * changePercent;
-            
-            return {
-                ...stock,
-                currentPrice: stock.currentPrice + priceChange,
-                dayChange: stock.dayChange + changePercent
-            };
-        });
-
-        // Update historical data
-        const lastValue = this.historicalData[this.historicalData.length - 1].y;
-        const change = lastValue * (Math.random() * 0.004 - 0.002); // ±0.2% change
-        
-        this.historicalData.push({
-            x: new Date().getTime(),
-            y: lastValue + change
-        });
-
-        if (this.historicalData.length > 180) {
-            this.historicalData.shift();
-        }
-
-        return {
-            stocks: this.stocks,
-            historicalData: this.historicalData
-        };
+    getHistoricalData() {
+        return this.historicalData;
     }
 }
