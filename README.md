@@ -1,8 +1,74 @@
 # Real-time Portfolio Dashboard (AlphaVantage)
 
+## Quick Start
+
+1. Clone Repository
+
+```bash
+
+git clone https://github.com/[username]/realtime-portfolio-dashboard
+
+cd realtime-portfolio-dashboard
+
+```
+
+2. Install Dependencies
+
+```bash
+
+pip install -r requirements.txt
+
+```
+
+3. Configure Azure Services
+
+   a. Event Hub Setup
+
+   ```bash
+
+   # Configure connection in config.py
+
+   EVENT_HUB_CONNECTION_STRING="your_connection_string"
+
+   EVENT_HUB_NAME="your_hub_name"
+
+   ```
+
+   b. SQL Database
+
+   ```bash
+
+   # Run schema setup scripts from /sql folder
+
+   # Update connection string in config.py
+
+   SQL_CONNECTION_STRING="your_connection_string"
+
+   ```
+
+4. Start Services
+
+   a. Data Producer
+
+   ```bash
+
+   python producer.py
+
+   ```
+
+   b. Flask Application
+
+   ```bash
+
+   python app.py
+
+   ```
+
+   - Open http://localhost:5000 in your browser
+  
 
 ## Project’s Function
-The Real-time Portfolio Dashboard integrates historical data processing with real-time streaming to monitor stock performance and provide technical analysis. It calculates indicators such as SMA, CMA, and VMA dynamically and delivers actionable insights via an interactive web interface. This project addresses the challenge of managing and visualizing large-scale, real-time financial data.
+A cloud-based real-time portfolio dashboard that tracks and visualizes stock performance using AlphaVantage API data, processes it through Azure services, and provides interactive visualizations with technical indicators.
 
 ---
 
@@ -27,7 +93,7 @@ The Real-time Portfolio Dashboard integrates historical data processing with rea
 
 3. **Storage:**  
    - Historical Data: Azure SQL Database.  
-   - Real-time Data: In-memory caching for low-latency updates.  
+   - Real-time Data: In-memory caching for low-latency updates & Azure Blob Storage archival.  
 
 4. **Presentation:**  
    - Flask-based dashboard with WebSocket integration for dynamic updates.  
