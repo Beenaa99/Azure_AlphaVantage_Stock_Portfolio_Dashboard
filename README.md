@@ -2,7 +2,7 @@
   
 
 ## Project’s Function
-A cloud-based real-time portfolio dashboard that tracks and visualizes stock performance using AlphaVantage API data, processes it through Azure services, and provides interactive visualizations with technical indicators.
+Cloud-based real-time portfolio monitoring system that integrates ive stock data visualization and stream processing. Provides interactive visualization of stock performance, technical indicators, and portfolio metrics for informed investment decisions.
 
 ---
 
@@ -12,8 +12,8 @@ A cloud-based real-time portfolio dashboard that tracks and visualizes stock per
 - **Stocks:** AAPL, NVDA, AMD, TSLA (Tech sector focus)  
 - **Data Types:**  
   - **Historical Data:** 20 years of daily OHLCV data, stored in Azure Blob Storage for batch processing.  
-  - **Intraday Data:** 1-minute OHLCV data simulated at 3-second intervals for November 2024.  
-  - **Technical Indicators:** Calculated metrics (SMA, CMA, VMA).  
+  - **Intraday Data:** 1-min intraday data (simulated at 3s intervals)  
+  - **Technical Indicators:** Via stream Processing - (SMA, CMA, VMA).  
 
 ---
 
@@ -54,12 +54,14 @@ A cloud-based real-time portfolio dashboard that tracks and visualizes stock per
 
 ## Data Transformation Models Used
 1. **Real-time Pipeline:**  
-   - Streamed data → Event Hub → Stream Analytics → WebSocket server.  
-   - Calculated SMA, CMA, VMA dynamically in 30-second windows.  
+   - Raw Data (colab producer) → Event Hub 1 → Stream Analytics → Technical Indicators → Event Hub 2 → Consumer → WebSocket
+   - Moving Average Calculations: Computes SMA, CMA, and VMA dynamically for each stock (Based on 30 second windows).
+   - Volume Metrics: Analyzes trading volume trends for insights.
+  
 
 2. **Batch Pipeline:**  
    - CSV Files → Azure Blob Storage → Data Factory → SQL Database.  
-   - Cleaned and standardized historical data for trend analysis.  
+   - Cleaning and Standardization: Ensures uniform formats across dates, decimals, and structures. 
 
 **Execution Notes:**  
 # Real-time Portfolio Dashboard - Setup Guide
@@ -76,7 +78,12 @@ A cloud-based real-time portfolio dashboard that tracks and visualizes stock per
 # - EVENTHUB_CONN_STR
 ```
 
-## Quick Setup
+├── azure-data-studio/          # SQL scripts ([Data Studio](https://azure.microsoft.com/en-us/products/data-studio))
+├── azure-event-hub/            # Producer/Consumer scripts ([Event Hubs](https://azure.microsoft.com/en-us/products/event-hubs))
+├── azure-data-factory/         # ADF pipelines ([Data Factory](https://azure.microsoft.com/en-us/products/data-factory))
+├── azure-stream-analytics/    # Analytics queries ([Stream Analytics](https://azure.microsoft.com/en-us/products/stream-analytics))
+└── web-app/                    # Flask application ([Flask](https://flask.palletsprojects.com/en/stable/))
+
 ### 1. Database
 ```bash
 cd azure-data-studio
@@ -108,16 +115,13 @@ cd azure-data-factory
 ```bash
 cd web-app
 pip install -r requirements.txt
-
-
-
 python app.py
 # Access at http://localhost:5000
 ```
 
 ## Verification
 - Check database for portfolio table
-- Verify Event Hub data flow
+- Verify Event Hub data flow (producer -> event hub 1 -> stream analytics -> event hub 2 -> consumer)
 - Monitor Stream Analytics job
 - Confirm real-time dashboard updates
 
@@ -138,7 +142,7 @@ The project demonstrates a scalable, cloud-native architecture capable of real-t
 
 ---
 ## Demo
-![Watch the Demo](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/demo_videos/portfolio_page_demo.mp4)
+![Watch the Demo](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/demo_videos/portfolio_page_demo.gif)
 ![Portfolio Dashboard](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/images/portfolio_dashboard.jpeg)
 ![Stock-Details Page](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/images/tesla_stock_1.jpeg)
 
