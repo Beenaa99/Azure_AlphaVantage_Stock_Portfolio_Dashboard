@@ -62,73 +62,65 @@ A cloud-based real-time portfolio dashboard that tracks and visualizes stock per
    - Cleaned and standardized historical data for trend analysis.  
 
 **Execution Notes:**  
-.  
+# Real-time Portfolio Dashboard - Setup Guide
 
-1. Clone Repository
+## Prerequisites
+- Python 3.8+
+- Azure Account (Event Hub, Stream Analytics, Data Factory, SQL DB)
+- AlphaVantage API key
 
 ```bash
-
-git clone https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard
-
-cd Azure_AlphaVantage_Stock_Portfolio_Dashboard
-
+# Configure .env with:
+# - ALPHAVANTAGE_API_KEY
+# - SQL_CONNECTION_STRING
+# - EVENTHUB_CONN_STR
 ```
 
-2. Install Dependencies
-
+## Quick Setup
+### 1. Database
 ```bash
+cd azure-data-studio
+# Run sql files in Azure Data Studio subfolders
+```
 
+### 2. Event Hub
+```bash
+cd azure-event-hub
+# Start data flow:
+python producer.py (window/stock -- new terminal)
+python consumer.py  # new terminal
+```
+
+### 3. Stream Analytics
+```bash
+cd azure-stream-processing
+# Import stream_processing.aql to Azure Portal
+# Configure input/output and start job
+```
+
+### 4. Data Factory
+```bash
+cd azure-data-factory
+# Import and configure pipeline JSONs via Azure Portal
+```
+
+### 5. Web App
+```bash
+cd web-app
 pip install -r requirements.txt
 
+
+
+python app.py
+# Access at http://localhost:5000
 ```
 
-3. Configure Azure Services
+## Verification
+- Check database for portfolio table
+- Verify Event Hub data flow
+- Monitor Stream Analytics job
+- Confirm real-time dashboard updates
 
-   a. Event Hub Setup
-
-   ```bash
-
-   # Configure connection in config.py
-
-   EVENT_HUB_CONNECTION_STRING="your_connection_string"
-
-   EVENT_HUB_NAME="your_hub_name"
-
-   ```
-
-   b. SQL Database
-
-   ```bash
-
-   # Run schema setup scripts from /sql folder
-
-   # Update connection string in config.py
-
-   SQL_CONNECTION_STRING="your_connection_string"
-
-   ```
-
-4. Start Services
-
-   a. Data Producer
-
-   ```bash
-
-   python producer.py
-
-   ```
-
-   b. Flask Application
-
-   ```bash
-
-   python app.py
-
-   ```
-
-   - Open http://localhost:5000 in your browser
-
----
 
 ## Thorough Investigation
 ### Viability and Innovations
@@ -146,8 +138,14 @@ The project demonstrates a scalable, cloud-native architecture capable of real-t
 
 ---
 ## Demo
-[Watch the Demo](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/demo_videos/portfolio_page_demo.mp4)
-[GIF](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXVjYjd1MWhidXVsd3Z5dTl0NzJ1OTE4dnQ3bmx5aXUxOWVjcHJ2NCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/13rcdZqP5DsH4QGKZK/giphy.gif)
+![Watch the Demo](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/demo_videos/portfolio_page_demo.mp4)
+![Portfolio Dashboard](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/images/portfolio_dashboard.jpeg)
+![Stock-Details Page](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/images/tesla_stock_1.jpeg)
+
+---
+
+## REPORT 
+Please find the report ([here](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/ECE%205984%20_%20Project%20Final%20Report.pdf))
 
 ---
 
