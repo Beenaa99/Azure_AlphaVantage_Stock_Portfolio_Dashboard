@@ -14,13 +14,13 @@ import time
 import requests
 from azure.eventhub import EventHubProducerClient, EventData
 
-CONNECTION_STR = "Endpoint=sb://intraday-stock-ns.servicebus.windows.net/;SharedAccessKeyName=producer-policy;SharedAccessKey=KYx6NuNrdjo07JmIbDMv7yrlISt1BdVdo+AEhDDTsfY="
+CONNECTION_STR = "CONNECTTION_STR"
 EVENT_HUB_NAME = "intraday-stock-1"
 stock_symbol = "AAPL"
 
 def fetch_data_from_api():
 
-    response = requests.get('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=AMD&interval=1min&month=2024-11&outputsize=full&apikey=V2SAP2L4HP2N4BBP')
+    response = requests.get('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=AMD&interval=1min&month=2024-11&outputsize=full&apikey=<APIKEY>')
 
     if response.status_code == 200:
         return response.json()  # Return JSON response
@@ -28,7 +28,6 @@ def fetch_data_from_api():
         print(f"Error fetching data: {response.status_code} - {response.text}")
         return None
 
-"""https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=NVDA&interval=1min&month=2024-11&outputsize=full&apikey=V2SAP2L4HP2N4BBP"""
 
 def send_data_to_eventhub(data):
     """
