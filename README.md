@@ -1,9 +1,5 @@
 # Real-time Portfolio Dashboard (AlphaVantage)
 
-## Title
-**Real-time Portfolio Dashboard with Technical Analysis**
-
----
 
 ## Project’s Function
 The Real-time Portfolio Dashboard integrates historical data processing with real-time streaming to monitor stock performance and provide technical analysis. It calculates indicators such as SMA, CMA, and VMA dynamically and delivers actionable insights via an interactive web interface. This project addresses the challenge of managing and visualizing large-scale, real-time financial data.
@@ -39,7 +35,7 @@ The Real-time Portfolio Dashboard integrates historical data processing with rea
 ---
 ## Infographic
 ### System Architecture
-![System Architecture](https)
+![System Architecture](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/images/system_arch.png?raw=true)
 
 
 ---
