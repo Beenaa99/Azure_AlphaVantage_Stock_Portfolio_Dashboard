@@ -121,9 +121,6 @@ python app.py
 - Monitor Stream Analytics job
 - Confirm real-time dashboard updates
 
-## Issues?
-Check service-specific logs in Azure Portal
----
 
 ## Thorough Investigation
 ### Viability and Innovations
