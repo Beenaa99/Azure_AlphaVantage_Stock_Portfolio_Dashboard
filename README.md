@@ -77,13 +77,16 @@ Cloud-based real-time portfolio monitoring system that integrates ive stock data
 # - SQL_CONNECTION_STRING
 # - EVENTHUB_CONN_STR
 ```
+## Repository Structure
+```
+
 
 ├── azure-data-studio/          # SQL scripts ([Data Studio](https://azure.microsoft.com/en-us/products/data-studio))
 ├── azure-event-hub/            # Producer/Consumer scripts ([Event Hubs](https://azure.microsoft.com/en-us/products/event-hubs))
 ├── azure-data-factory/         # ADF pipelines ([Data Factory](https://azure.microsoft.com/en-us/products/data-factory))
 ├── azure-stream-analytics/    # Analytics queries ([Stream Analytics](https://azure.microsoft.com/en-us/products/stream-analytics))
 └── web-app/                    # Flask application ([Flask](https://flask.palletsprojects.com/en/stable/))
-
+```
 ### 1. Database
 ```bash
 cd azure-data-studio
