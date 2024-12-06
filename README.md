@@ -3,8 +3,8 @@
 
 ## Project’s Function
 Cloud-based real-time portfolio monitoring system that integrates ive stock data visualization and stream processing. Provides interactive visualization of stock performance, technical indicators, and portfolio metrics for informed investment decisions.
+![Descriptors](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/demo_videos/descriptors.gif)
 
-![Watch the Demo](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/demo_videos/portfolio_page_demo.gif)
 
 ---
 
@@ -64,8 +64,9 @@ Cloud-based real-time portfolio monitoring system that integrates ive stock data
 2. **Batch Pipeline:**  
    - CSV Files → Azure Blob Storage → Data Factory → SQL Database.  
    - Cleaning and Standardization: Ensures uniform formats across dates, decimals, and structures.
-   
+
 ![Volume Analysis](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/demo_videos/volume%20analysis.gif)
+
 
 **Execution Notes:**  
 # Real-time Portfolio Dashboard - Setup Guide
@@ -153,7 +154,7 @@ The project demonstrates a scalable, cloud-native architecture capable of real-t
 ---
 ## Demo Videos & Screenshots
 
-![Descriptors](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/demo_videos/descriptors.gif)
+![Watch the Demo](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/demo_videos/portfolio_page_demo.gif)
 ![Stock-Details Page](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/images/tesla_stock_1.jpeg)
 
 ---
