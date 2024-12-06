@@ -65,7 +65,7 @@ Cloud-based real-time portfolio monitoring system that integrates ive stock data
    - CSV Files → Azure Blob Storage → Data Factory → SQL Database.  
    - Cleaning and Standardization: Ensures uniform formats across dates, decimals, and structures.
    
-  ![Volume Analysis](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/demo_videos/volume%20analysis.gif)
+![Volume Analysis](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/demo_videos/volume%20analysis.gif)
 
 **Execution Notes:**  
 # Real-time Portfolio Dashboard - Setup Guide
@@ -80,12 +80,12 @@ Cloud-based real-time portfolio monitoring system that integrates ive stock data
 - ([Flask](https://flask.palletsprojects.com/en/stable/))
 - AlphaVantage API key
 
-
-### Keys required:
-#### - ALPHAVANTAGE_API_KEY
-#### - SQL_CONNECTION_STRING (Azure SQL server)
-#### - EVENTHUB_CONN_STR (event hub 1 for producers, event hub 2 for consumer)
-
+```
+# Keys required:
+ALPHAVANTAGE_API_KEY
+SQL_CONNECTION_STRING (Azure SQL server)
+EVENTHUB_CONN_STR (event hub 1 for producers, event hub 2 for consumer)
+```
 ## Repository Structure
 ```
 ├── azure-data-studio/          # SQL scripts 
