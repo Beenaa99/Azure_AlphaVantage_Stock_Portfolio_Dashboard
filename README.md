@@ -6,9 +6,9 @@
 
 ```bash
 
-git clone https://github.com/[username]/realtime-portfolio-dashboard
+git clone https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard
 
-cd realtime-portfolio-dashboard
+cd Azure_AlphaVantage_Stock_Portfolio_Dashboard
 
 ```
 
@@ -144,10 +144,14 @@ The project demonstrates a scalable, cloud-native architecture capable of real-t
 ### Future Steps
 - Add predictive analytics (e.g., ML-based forecasting).  
 - Incorporate automated trading and alert systems.  
-- Explore cost-effective, self-hosted alternatives.  
+- Explore cost-effective, self-hosted alternatives.
+
+---
+## Demo
+[Watch the Demo](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard/blob/main/demo_videos/portfolio_page_demo.mov)
 
 ---
 
 ## GitHub Repository
-[GitHub Link Placeholder]
+[[GitHub Link](https://github.com/Beenaa99/Azure_AlphaVantage_Stock_Portfolio_Dashboard)]
 
