@@ -23,7 +23,8 @@ Cloud-based real-time portfolio monitoring system that integrates ive stock data
    - Real-time Data: Simulated intraday data → Azure Event Hubs.  
 
 2. **Processing:**  
-   - **Real-time:** Azure Stream Analytics computes technical indicators.  
+   - **Real-time:**
+   - Azure Stream Analytics computes SMA, CMA, and VMA dynamically for trend Identification.
    - **Batch:** Azure Data Factory processes historical data.  
 
 3. **Storage:**  
@@ -55,10 +56,9 @@ Cloud-based real-time portfolio monitoring system that integrates ive stock data
 ## Data Transformation Models Used
 1. **Real-time Pipeline:**  
    - Raw Data (colab producer) → Event Hub 1 → Stream Analytics → Technical Indicators → Event Hub 2 → Consumer → WebSocket
-   - Moving Average Calculations: Computes SMA, CMA, and VMA dynamically for each stock (Based on 30 second windows).
-   - Volume Metrics: Analyzes trading volume trends for insights.
+   - Charts moving average (SMA: Simple Moving Average & CMA : Cumulative Moving Average) crossovers for potential buy/sell signals.
+   - Volume Analysis : Charts Volume trades against VMA (Volume Moving Average) to understand trading activity for informed investment decisions
   
-
 2. **Batch Pipeline:**  
    - CSV Files → Azure Blob Storage → Data Factory → SQL Database.  
    - Cleaning and Standardization: Ensures uniform formats across dates, decimals, and structures. 
@@ -76,12 +76,12 @@ Cloud-based real-time portfolio monitoring system that integrates ive stock data
 - ([Flask](https://flask.palletsprojects.com/en/stable/))
 - AlphaVantage API key
 
-```bash
+
 # Configure .env with:
 # - ALPHAVANTAGE_API_KEY
 # - SQL_CONNECTION_STRING (Azure SQL server)
 # - EVENTHUB_CONN_STR (event hub 1 for producers, event hub 2 for consumer)
-```
+
 ## Repository Structure
 ```
 ├── azure-data-studio/          # SQL scripts 
